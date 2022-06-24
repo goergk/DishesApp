@@ -1,3 +1,6 @@
+// App logo author:
+// https://freeicons.io/profile/6156
+
 import React from 'react';
 import Card from './components/Card';
 

@@ -6,7 +6,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      'sans': ['Noto Sans TC', 'sans-serif']
+      'sans': ['Noto Sans TC', 'sans-serif'],
+      'inconsolata': ['Inconsolata', 'monospace'],
     },
     backgroundImage: {
       'burger': "url('./components/images/background.jpg')",
