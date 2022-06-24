@@ -6,12 +6,12 @@ import { useFormik } from "formik";
 /* Setting the initial values of the form. */
 const initialValues = {
     name: "",
-    time: "00:00:00",
-    dishType: "Select dish type",
-    noOfSlices: "",
+    preparation_time: "00:00:00",
+    type: "Select dish type",
+    no_of_slices: "",
     diameter: "",
-    spiceness: 1,
-    slicesOfBread: ""
+    spiciness_scale: 1,
+    slices_of_bread: ""
 };
 
 /* Defining the validation rules for the form. */
@@ -20,32 +20,35 @@ const FORM_VALIDATION = Yup.object().shape({
         .required("Required")
         .max(36, 'Max length is 36')
         .min(4, 'Min length is 4'),
-    time: Yup.string()
+    preparation_time: Yup.string()
         .required("Required")
         .min(4, 'Min length is 4')
         .max(16, 'Max length is 16')
-        .test("time", "Required", function (value) {
-            return value !== "00:00:00" || this.parent.time.required;
+        .test("preparation_time", "Required", function (value) {
+            return value !== "00:00:00" || this.parent.preparation_time.required;
         }),
-    dishType: Yup.string()
-        .test("dishType", "Required", function (value) {
-            return value !== "Select dish type" || this.parent.dishType.required;
+    type: Yup.string()
+        .test("type", "Required", function (value) {
+            return value !== "Select dish type" || this.parent.type.required;
         }),
-    noOfSlices: Yup.number().when('dishType', {
-        is: (dishType: string) => dishType === 'pizza',
-        then: Yup.number().required('Required').max(36, 'Max value is 36').min(2, 'Min value is 2'),
-        otherwise: Yup.number(),
-    }),
-    diameter: Yup.number().when('dishType', {
-        is: (dishType: string) => dishType === 'pizza',
-        then: Yup.number().required('Required').max(100.00, 'Max diameter is 100.00').min(5, 'Min diameter is 5.00'),
-        otherwise: Yup.number(),
-    }),
-    slicesOfBread: Yup.number().when('dishType', {
-        is: (dishType: string) => dishType === 'sandwich',
-        then: Yup.number().required('Required').max(10, 'Max value is 10').min(2, 'Min value is 2'),
-        otherwise: Yup.number(),
-    }),
+    no_of_slices: Yup.number()
+        .when('type', {
+            is: (type: string) => type === 'pizza',
+            then: Yup.number().required('Required').max(36, 'Max value is 36').min(2, 'Min value is 2'),
+            otherwise: Yup.number(),
+        }),
+    diameter: Yup.number()
+        .when('type', {
+            is: (type: string) => type === 'pizza',
+            then: Yup.number().required('Required').max(100.00, 'Max diameter is 100.00').min(5, 'Min diameter is 5.00'),
+            otherwise: Yup.number(),
+        }),
+    slices_of_bread: Yup.number()
+        .when('type', {
+            is: (type: string) => type === 'sandwich',
+            then: Yup.number().required('Required').max(20, 'Max value is 20').min(2, 'Min value is 2'),
+            otherwise: Yup.number(),
+        }),
 
 });
 
@@ -53,13 +56,70 @@ const Card = () => {
 
     const [rangeColor, setRangeColor] = useState<string>('text-red-600');
     const [headerBackground, setHeaderBackground] = useState<string>('');
+    const [returnedError, setReturnedError] = useState<string | undefined>(undefined);
+    const [returnedData, setReturnedData] = useState({});
 
-    const onSubmit = () => { console.log("It works!") };
+    const onSubmit = () => {
+
+        /* Creating an object called body and assigning it a properties. */
+        let body: {
+            name: string,
+            preparation_time: string,
+            type: string,
+            no_of_slices: number | undefined,
+            diameter: number | undefined,
+            spiciness_scale: number | undefined,
+            slices_of_bread: number | undefined
+        } = {
+            "name": values.name,
+            "preparation_time": values.preparation_time,
+            "type": values.type,
+            "no_of_slices": undefined,
+            "diameter": undefined,
+            "spiciness_scale": undefined,
+            "slices_of_bread": undefined
+        }
+
+        /* Checking the type of food and then adding the appropriate properties to the body object. */
+        if (values.type === 'pizza') {
+            body['no_of_slices'] = Number(values.no_of_slices);
+            body['diameter'] = Number(values.diameter);
+        }
+
+        if (values.type === 'soup') {
+            body['spiciness_scale'] = Number(values.spiciness_scale);
+        }
+
+        if (values.type === 'sandwich') {
+            body['slices_of_bread'] = Number(values.slices_of_bread);
+        }
+
+        /* Sending a POST request to the server. */
+        fetch('https://frosty-wood-6558.getsandbox.com:443/dishes', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(response => response.json())
+            .then(data => {
+                /* Returned validation errors support */
+                if (Object.keys(data).length === 1) {
+                    setReturnedError(data[Object.keys(data)[0]]);
+                }
+                else {
+                    setReturnedData(data);
+                }
+            })
+    };
 
     /*ResetValues() is a function that resets the form values and errors.*/
     const resetValues = () => {
         resetForm({});
         setErrors({});
+        setReturnedError(undefined);
     }
 
     /* Using the useFormik hook to create a form. */
@@ -73,31 +133,31 @@ const Card = () => {
 
     /* Setting the color of the range slider based on the value of the slider. */
     useEffect(() => {
-        if (values.spiceness === 1) { setRangeColor('text-blue-700') }
-        else if (values.spiceness === 2) { setRangeColor('text-blue-400') }
-        else if (values.spiceness === 3) { setRangeColor('text-blue-300') }
-        else if (values.spiceness === 4) { setRangeColor('text-yellow-400') }
-        else if (values.spiceness === 5) { setRangeColor('text-yellow-500') }
-        else if (values.spiceness === 6) { setRangeColor('text-orange-400') }
-        else if (values.spiceness === 7) { setRangeColor('text-orange-700') }
-        else if (values.spiceness === 8) { setRangeColor('text-red-500') }
-        else if (values.spiceness === 9) { setRangeColor('text-red-700') }
-        else if (values.spiceness === 10) { setRangeColor('text-red-600') }
+        if (values.spiciness_scale === 1) { setRangeColor('text-blue-700') }
+        else if (values.spiciness_scale === 2) { setRangeColor('text-blue-400') }
+        else if (values.spiciness_scale === 3) { setRangeColor('text-blue-300') }
+        else if (values.spiciness_scale === 4) { setRangeColor('text-yellow-400') }
+        else if (values.spiciness_scale === 5) { setRangeColor('text-yellow-500') }
+        else if (values.spiciness_scale === 6) { setRangeColor('text-orange-400') }
+        else if (values.spiciness_scale === 7) { setRangeColor('text-orange-700') }
+        else if (values.spiciness_scale === 8) { setRangeColor('text-red-500') }
+        else if (values.spiciness_scale === 9) { setRangeColor('text-red-700') }
+        else if (values.spiciness_scale === 10) { setRangeColor('text-red-600') }
 
-    }, [values.spiceness])
+    }, [values.spiciness_scale])
 
     /* Setting the background color of the header based on the dish type selected. */
     useEffect(() => {
-        if (values.dishType === "Select dish type") { setHeaderBackground('bg-food') }
-        else if (values.dishType === dishes[0].value) { setHeaderBackground('bg-pizza') }
-        else if (values.dishType === dishes[1].value) { setHeaderBackground('bg-soup') }
-        else if (values.dishType === dishes[2].value) { setHeaderBackground('bg-sandwich') }
-    }, [values.dishType])
+        if (values.type === "Select dish type") { setHeaderBackground('bg-food') }
+        else if (values.type === dishes[0].value) { setHeaderBackground('bg-pizza') }
+        else if (values.type === dishes[1].value) { setHeaderBackground('bg-soup') }
+        else if (values.type === dishes[2].value) { setHeaderBackground('bg-sandwich') }
+    }, [values.type])
 
     return (
         <form className='w-[35rem] h-[30rem] drop-shadow-lg rounded-lg bg-slate-100' onSubmit={handleSubmit}>
             <div className={`w-full h-[4rem] ${headerBackground} bg-center z-[-10] rounded-t-lg duration-200`} />
-            <div className="w-full h-[19.5rem] border-b-2 px-8 py-7">
+            <div className="relative w-full h-[19.5rem] border-b-2 px-8 py-7">
                 <div className='flex flex-row justify-between'>
                     <div className="mb-2">
                         <label className="block text-gray-700 text-sm font-sans font-medium mb-2">
@@ -118,14 +178,14 @@ const Card = () => {
                             ⌚ Preparation time:
                         </label>
                         <input
-                            id="time"
+                            id="preparation_time"
                             type="time"
                             step="2"
-                            value={values.time}
+                            value={values.preparation_time}
                             onChange={handleChange}
                             className="shadow appearance-none border rounded w-[10.7rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline hover:cursor-pointer"
                         />
-                        {(errors.time && touched.time) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.time}</p>}
+                        {(errors.preparation_time && touched.preparation_time) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.preparation_time}</p>}
                     </div>
                 </div>
 
@@ -134,9 +194,9 @@ const Card = () => {
                         👇 Dish type:
                     </label>
                     <select
-                        id="dishType"
+                        id="type"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline hover:cursor-pointer"
-                        value={values.dishType}
+                        value={values.type}
                         onChange={handleChange}
                     >
                         <option disabled hidden>Select dish type</option>
@@ -144,24 +204,24 @@ const Card = () => {
                             <option key={dish.id} value={dish.value}>{dish.desc}</option>
                         ))}
                     </select>
-                    {(errors.dishType && touched.dishType) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.dishType}</p>}
+                    {(errors.type && touched.type) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.type}</p>}
                 </div>
 
                 {
-                    values.dishType === dishes[0].value &&
+                    values.type === dishes[0].value &&
                     <div className='flex flex-row justify-between'>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-sans font-medium mb-2">
                                 ☸️Number of slices:
                             </label>
                             <input
-                                id="noOfSlices"
+                                id="no_of_slices"
                                 type="number"
-                                value={values.noOfSlices}
+                                value={values.no_of_slices}
                                 onChange={handleChange}
                                 className="shadow appearance-none border rounded w-[14rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                             />
-                            {(errors.noOfSlices && touched.noOfSlices) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.noOfSlices}</p>}
+                            {(errors.no_of_slices && touched.no_of_slices) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.no_of_slices}</p>}
                         </div>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-sans font-medium mb-2">
@@ -180,17 +240,17 @@ const Card = () => {
                     </div>
                 }
                 {
-                    values.dishType === dishes[1].value &&
+                    values.type === dishes[1].value &&
                     <div className="mb-2">
                         <label className="block text-gray-700 text-sm font-sans font-medium mb-2">
                             🔥Spiceness level:
                         </label>
                         <input
-                            id="spiceness"
+                            id="spiciness_scale"
                             type="range"
                             min="1"
                             max="10"
-                            value={values.spiceness}
+                            value={values.spiciness_scale}
                             onChange={handleChange}
                             className="appearance-none shadow rounded-lg w-full text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                         />
@@ -199,27 +259,28 @@ const Card = () => {
                                 Level:
                             </p>
                             <span className={`font-sans ml-2 font-bold ${rangeColor}`}>
-                                {values.spiceness}
+                                {values.spiciness_scale}
                             </span>
                         </div>
                     </div>
                 }
                 {
-                    values.dishType === dishes[2].value &&
+                    values.type === dishes[2].value &&
                     <div className="mb-2">
                         <label className="block text-gray-700 text-sm font-sans font-medium mb-2">
                             🍞Slices of bread:
                         </label>
                         <input
-                            id="slicesOfBread"
+                            id="slices_of_bread"
                             type="number"
-                            value={values.slicesOfBread}
+                            value={values.slices_of_bread}
                             onChange={handleChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                         />
-                        {(errors.slicesOfBread && touched.slicesOfBread) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.slicesOfBread}</p>}
+                        {(errors.slices_of_bread && touched.slices_of_bread) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.slices_of_bread}</p>}
                     </div>
                 }
+                {returnedError && <p className="absolute bottom-[0%] text-red-500 text-xs font-sans font-light"><b>Returned validation error: </b>{returnedError}</p>}
             </div>
             <div className="flex justify-end items-end w-full h-[4.5rem] gap-6 px-8">
                 <button type="submit" className="flex justify-center items-center gap-2 bg-transparent hover:bg-green-500 text-green-700 fill-green-700 font-semibold hover:text-white hover:fill-white w-[8rem] py-2 border border-green-500 hover:border-transparent rounded duration-100">
