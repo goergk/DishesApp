@@ -29,6 +29,9 @@ module.exports = {
         'level-9': '#f46d43',
         'level-10': '#d73027',
       },
+      screens: {
+        'sm': { 'max': '864px' },
+      }
     }
   },
   plugins: [],

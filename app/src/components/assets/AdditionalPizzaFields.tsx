@@ -53,7 +53,7 @@ const AdditionalPizzaFields: React.FC<Props> = ({
                     type="number"
                     value={values.no_of_slices}
                     onChange={handleChange}
-                    className="shadow appearance-none border rounded w-[14rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded sm:w-[8.5rem] sm:text-sm w-[14rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 {(errors.no_of_slices && touched.no_of_slices) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.no_of_slices}</p>}
             </div>
@@ -67,7 +67,7 @@ const AdditionalPizzaFields: React.FC<Props> = ({
                     step="0.01"
                     value={values.diameter}
                     onChange={handleChange}
-                    className="shadow appearance-none border rounded w-[14rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded sm:w-[7rem] sm:text-sm w-[14rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 {(errors.diameter && touched.diameter) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.diameter}</p>}
             </div>

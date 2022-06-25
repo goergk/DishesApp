@@ -13,7 +13,7 @@ const ResponseContainer: React.FC<Props> = ({
     returnedData
 }) => {
     return (
-        <div className="flex flex-col justify-end w-[35rem] h-[30rem] drop-shadow-lg rounded-lg bg-slate-100 py-12 px-8">
+        <div className="flex flex-col justify-end w-[35rem] h-[30rem] sm:w-[90%] drop-shadow-lg rounded-lg bg-slate-100 py-12 px-8">
             <button
                 onClick={e => { resetValues(); setReturnedData(undefined); }}
                 type="button"
@@ -25,12 +25,12 @@ const ResponseContainer: React.FC<Props> = ({
             <p className="font-sans font-medium text-xl mb-4">
                 Returned response:
             </p>
-            <div className="flex flex-col justify-center w-full h-[18rem] bg-slate-800 rounded-md px-6 py-6 font-inconsolata">
-                <span className="text-pink-400">&#123;</span>
+            <div className="flex flex-col justify-center w-full h-[18rem] sm:overflow-auto bg-slate-800 rounded-md px-6 py-6 font-inconsolata">
+                <span className="text-pink-400 sm:text-xs">&#123;</span>
                 {Object.keys(returnedData!).map((key) => {
-                    return <span className="pl-6 text-cyan-400" key={key}>{key}: {returnedData![key]}</span>
+                    return <span className="pl-6 text-cyan-400 sm:text-xs" key={key}>{key}: {returnedData![key]}</span>
                 })}
-                <span className="text-pink-400">&#125;</span>
+                <span className="text-pink-400 sm:text-xs">&#125;</span>
             </div>
         </div>
     )

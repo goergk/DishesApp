@@ -8,7 +8,7 @@ interface Props {
 
 const ButtonsContainer: React.FC<Props> = ({ resetValues }) => {
     return (
-        <div className="flex justify-end items-end w-full h-[4.5rem] gap-6 px-8">
+        <div className="flex justify-end items-end w-full h-[4.5rem] gap-6 px-8 sm:justify-center">
             <button type="submit" className="flex justify-center items-center gap-2 bg-transparent hover:bg-green-600 text-green-800 fill-green-800 font-semibold hover:text-white hover:fill-white w-[8rem] py-2 border border-green-500 hover:border-transparent rounded duration-100">
                 <SubmitIcon />
                 <span>Submit</span>

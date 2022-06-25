@@ -58,7 +58,7 @@ const MainFields: React.FC<Props> = ({
                         placeholder='Type name'
                         value={values.name}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-[18rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded sm:text-sm w-[18rem] sm:w-[90%] py-2 sm:py-[.58rem] px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                     />
                     {(errors.name && touched.name) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.name}</p>}
                 </div>
@@ -72,7 +72,7 @@ const MainFields: React.FC<Props> = ({
                         step="2"
                         value={values.preparation_time}
                         onChange={handleChange}
-                        className="shadow appearance-none border rounded w-[10.7rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline hover:cursor-pointer"
+                        className="shadow appearance-none border rounded sm:text-sm w-[10.7rem] sm:w-[8.73rem] py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline hover:cursor-pointer"
                     />
                     {(errors.preparation_time && touched.preparation_time) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.preparation_time}</p>}
                 </div>
@@ -84,7 +84,7 @@ const MainFields: React.FC<Props> = ({
                 </label>
                 <select
                     id="type"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline hover:cursor-pointer"
+                    className="shadow appearance-none border rounded sm:text-sm w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline hover:cursor-pointer"
                     value={values.type}
                     onChange={handleChange}
                 >

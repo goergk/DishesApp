@@ -52,7 +52,7 @@ const AdditionalSandwichFields: React.FC<Props> = ({
                 type="number"
                 value={values.slices_of_bread}
                 onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded sm:text-sm w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
             />
             {(errors.slices_of_bread && touched.slices_of_bread) && <p className="absolute text-red-500 text-xs mt-1 font-sans font-light">{errors.slices_of_bread}</p>}
         </div>

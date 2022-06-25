@@ -53,7 +53,7 @@ const AdditionalSoupFields: React.FC<Props> = ({
                 onChange={handleChange}
                 className="appearance-none shadow rounded-lg w-full text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
             />
-            <div className="flex justify-center items-center w-full mt-2">
+            <div className="flex justify-center items-center sm:text-sm w-full mt-2">
                 <p className={`font-sans font-medium ${rangeColor}`}>
                     Level:
                 </p>

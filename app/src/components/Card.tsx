@@ -85,7 +85,7 @@ const Card = () => {
     return (
         <>
             {returnedData === undefined &&
-                <form className='w-[35rem] h-[30rem] drop-shadow-lg rounded-lg bg-slate-100' onSubmit={handleSubmit}>
+                <form className='w-[35rem] h-[30rem] sm:w-[90vw] drop-shadow-lg rounded-lg bg-slate-100' onSubmit={handleSubmit}>
                     <FormHeader values={values} />
                     <div className="relative w-full h-[19.5rem] border-b-2 px-8 py-7">
                         <MainFields
