@@ -30,7 +30,7 @@ module.exports = {
         'level-10': '#d73027',
       },
       screens: {
-        'sm': { 'max': '864px' },
+        'sm': { 'max': '600px' },
       }
     }
   },

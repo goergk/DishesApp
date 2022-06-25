@@ -36,16 +36,16 @@ const Card = () => {
         }
 
         /* Checking the type of food and then adding the appropriate properties to the body object. */
-        if (values.type === 'pizza') {
+        if (values.type === dishes[0].value) {
             body['no_of_slices'] = Number(values.no_of_slices);
             body['diameter'] = Number(values.diameter);
         }
 
-        if (values.type === 'soup') {
+        if (values.type === dishes[1].value) {
             body['spiciness_scale'] = Number(values.spiciness_scale);
         }
 
-        if (values.type === 'sandwich') {
+        if (values.type === dishes[2].value) {
             body['slices_of_bread'] = Number(values.slices_of_bread);
         }
 
