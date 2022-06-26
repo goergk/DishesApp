@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/DishesApp/static/css/main.1a5abfc7.css",
-    "main.js": "/DishesApp/static/js/main.86dca2fe.js",
+    "main.js": "/DishesApp/static/js/main.941afdaf.js",
     "static/media/background.jpg": "/DishesApp/static/media/background.f304c2d1c980184e741c.jpg",
     "static/media/food.jpg": "/DishesApp/static/media/food.4f838b35b0fd6863de5a.jpg",
     "static/media/pizza.jpg": "/DishesApp/static/media/pizza.d45726873c9b877f888f.jpg",
@@ -9,10 +9,10 @@
     "static/media/sandwich.jpg": "/DishesApp/static/media/sandwich.514a202c2979112a7dcf.jpg",
     "index.html": "/DishesApp/index.html",
     "main.1a5abfc7.css.map": "/DishesApp/static/css/main.1a5abfc7.css.map",
-    "main.86dca2fe.js.map": "/DishesApp/static/js/main.86dca2fe.js.map"
+    "main.941afdaf.js.map": "/DishesApp/static/js/main.941afdaf.js.map"
   },
   "entrypoints": [
     "static/css/main.1a5abfc7.css",
-    "static/js/main.86dca2fe.js"
+    "static/js/main.941afdaf.js"
   ]
 }
