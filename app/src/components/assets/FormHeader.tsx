@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { dishes } from '../data';
+import { Values } from '../types/types';
 
 interface Props {
-    values: {
-        name: string;
-        preparation_time: string;
-        type: string;
-        no_of_slices: string;
-        diameter: string;
-        spiciness_scale: number;
-        slices_of_bread: string;
-    }
+    values: Values
 }
 
 const FormHeader: React.FC<Props> = ({ values }) => {
 
-    const [headerBackground, setHeaderBackground] = useState<string>('');
+    const [headerBackground, setHeaderBackground] = useState('');
 
     /* Setting the background color of the header based on the dish type selected. */
     useEffect(() => {

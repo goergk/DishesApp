@@ -1,10 +1,11 @@
 import React from 'react'
 import BackIcon from '../icons/BackIcon';
+import { ReturnedData } from '../types/types';
 
 interface Props {
     resetValues: () => void,
-    setReturnedData: React.Dispatch<React.SetStateAction<undefined>>,
-    returnedData: never
+    setReturnedData: React.Dispatch<React.SetStateAction<ReturnedData>>,
+    returnedData: ReturnedData
 }
 
 const ResponseContainer: React.FC<Props> = ({
@@ -28,7 +29,7 @@ const ResponseContainer: React.FC<Props> = ({
             <div className="flex flex-col justify-center w-full h-[18rem] sm:overflow-auto bg-slate-800 rounded-md px-6 py-6 font-inconsolata">
                 <span className="text-pink-400 sm:text-xs">&#123;</span>
                 {Object.keys(returnedData!).map((key) => {
-                    return <span className="pl-6 text-cyan-400 sm:text-xs" key={key}>{key}: {returnedData![key]}</span>
+                    return <span className="pl-6 text-cyan-400 sm:text-xs" key={key}>{key}: {returnedData![key as keyof typeof returnedData]}</span>
                 })}
                 <span className="text-pink-400 sm:text-xs">&#125;</span>
             </div>

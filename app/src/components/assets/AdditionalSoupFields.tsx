@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { Values } from '../types/types';
 
 interface Props {
-    values: {
-        name: string;
-        preparation_time: string;
-        type: string;
-        no_of_slices: string;
-        diameter: string;
-        spiciness_scale: number;
-        slices_of_bread: string;
-    },
+    values: Values,
     handleChange:
     {
         (e: React.ChangeEvent<any>): void;

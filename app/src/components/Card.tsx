@@ -3,31 +3,19 @@ import { dishes } from './data';
 import { useFormik } from "formik";
 import ResponseContainer from './assets/ResponseContainer';
 import { FORM_VALIDATION, initialValues } from './validation/validation';
-import AdditionalPizzaFields from './assets/AdditionalPizzaFields';
-import AdditionalSoupFields from './assets/AdditionalSoupFields';
-import AdditionalSandwichFields from './assets/AdditionalSandwichFields';
-import ButtonsContainer from './assets/ButtonsContainer';
-import MainFields from './assets/MainFields';
-import FormHeader from './assets/FormHeader';
+import { FormHeader, MainFields, AdditionalPizzaFields, AdditionalSoupFields, AdditionalSandwichFields, ButtonsContainer } from './assets';
+import { ReturnedData } from './types/types';
 
 const Card = () => {
 
-    const [returnedError, setReturnedError] = useState<string | undefined>(undefined);
-    const [returnedData, setReturnedData] = useState(undefined);
+    const [returnedError, setReturnedError] = useState('');
+    const [returnedData, setReturnedData] = useState<ReturnedData>(undefined);
 
     const onSubmit = () => {
         /* Creating an object called body and assigning it a properties. */
-        let body: {
-            name: string,
-            preparation_time: string,
-            type: string,
-            no_of_slices: number | undefined,
-            diameter: number | undefined,
-            spiciness_scale: number | undefined,
-            slices_of_bread: number | undefined
-        } = {
+        let body: ReturnedData = {
             "name": values.name,
-            "preparation_time": values.preparation_time,
+            "preparation_time": values.preparation_time.length === 5 ? `${values.preparation_time}:00` : values.preparation_time,
             "type": values.type,
             "no_of_slices": undefined,
             "diameter": undefined,
@@ -70,7 +58,7 @@ const Card = () => {
     const resetValues = () => {
         resetForm({});
         setErrors({});
-        setReturnedError(undefined);
+        setReturnedError('');
     }
 
     /* Using the useFormik hook to create a form. */
@@ -84,7 +72,7 @@ const Card = () => {
 
     return (
         <>
-            {returnedData === undefined &&
+            {!returnedData &&
                 <form className='w-[35rem] h-[30rem] sm:w-[90vw] drop-shadow-lg rounded-lg bg-slate-100' onSubmit={handleSubmit}>
                     <FormHeader values={values} />
                     <div className="relative w-full h-[19.5rem] border-b-2 px-8 py-7">
@@ -122,7 +110,7 @@ const Card = () => {
                     <ButtonsContainer resetValues={resetValues} />
                 </form>
             }
-            {returnedData !== undefined &&
+            {!!returnedData &&
                 <ResponseContainer
                     resetValues={resetValues}
                     setReturnedData={setReturnedData}
